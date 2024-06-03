@@ -5,6 +5,7 @@ import json
 
 import ddddocr
 from flask import Flask, request
+from flask_cors import cross_origin
 
 parser = argparse.ArgumentParser(description="使用ddddocr搭建的最简api服务")
 parser.add_argument("-p", "--port", type=int, default=9898)
@@ -93,6 +94,7 @@ def set_ret(result, ret_type='text'):
 
 @app.route('/<opt>/<img_type>', methods=['POST'])
 @app.route('/<opt>/<img_type>/<ret_type>', methods=['POST'])
+@cross_origin()
 def ocr(opt, img_type='file', ret_type='text'):
     try:
         img = get_img(request, img_type)
@@ -108,6 +110,7 @@ def ocr(opt, img_type='file', ret_type='text'):
 
 @app.route('/slide/<algo_type>/<img_type>', methods=['POST'])
 @app.route('/slide/<algo_type>/<img_type>/<ret_type>', methods=['POST'])
+@cross_origin()
 def slide(algo_type='compare', img_type='file', ret_type='text'):
     try:
         target_img = get_img(request, img_type, 'target_img')
@@ -118,6 +121,7 @@ def slide(algo_type='compare', img_type='file', ret_type='text'):
         return set_ret(e, ret_type)
 
 @app.route('/ping', methods=['GET'])
+@cross_origin()
 def ping():
     return "pong"
 
